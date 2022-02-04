@@ -57,7 +57,7 @@
     "test:e2e-browser": "jest test/e2e/browser",
     "test:unit": "jest test/unit",
     "test:types": "tsc -p types/test",
-    "prepare": "npm run build"
+    "postinstall": "cd ./node_modules/vue-meta && npm install && npm run build"
   },
   "dependencies": {
     "deepmerge": "^4.2.2"
