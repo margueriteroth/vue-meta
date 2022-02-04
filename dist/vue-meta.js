@@ -1,6 +1,6 @@
 /**
  * vue-meta v2.4.0
- * (c) 2020
+ * (c) 2022
  * - Declan de Wet
  * - Sébastien Chopin (@Atinux)
  * - Pim (@pimlie)
@@ -11,25 +11,19 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.VueMeta = factory());
-}(this, (function () { 'use strict';
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.VueMeta = factory());
+})(this, (function () { 'use strict';
 
   var version = "2.4.0";
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
 
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function (obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-
-    return _typeof(obj);
+    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+      return typeof obj;
+    } : function (obj) {
+      return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, _typeof(obj);
   }
 
   function _unsupportedIterableToArray(o, minLen) {
@@ -50,9 +44,9 @@
   }
 
   function _createForOfIteratorHelper(o, allowArrayLike) {
-    var it;
+    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
 
-    if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+    if (!it) {
       if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
         if (it) o = it;
         var i = 0;
@@ -85,7 +79,7 @@
         err;
     return {
       s: function () {
-        it = o[Symbol.iterator]();
+        it = it.call(o);
       },
       n: function () {
         var step = it.next();
@@ -280,7 +274,7 @@
    * files in server/ still use normal js function
    */
   function find(array, predicate, thisArg) {
-    if ( !Array.prototype.find) {
+    if (!Array.prototype.find) {
       // idx needs to be a Number, for..in returns string
       for (var idx = 0; idx < array.length; idx++) {
         if (predicate.call(thisArg, array[idx], idx, array)) {
@@ -294,7 +288,7 @@
     return array.find(predicate, thisArg);
   }
   function findIndex(array, predicate, thisArg) {
-    if ( !Array.prototype.findIndex) {
+    if (!Array.prototype.findIndex) {
       // idx needs to be a Number, for..in returns string
       for (var idx = 0; idx < array.length; idx++) {
         if (predicate.call(thisArg, array[idx], idx, array)) {
@@ -308,14 +302,14 @@
     return array.findIndex(predicate, thisArg);
   }
   function toArray(arg) {
-    if ( !Array.from) {
+    if (!Array.from) {
       return Array.prototype.slice.call(arg);
     }
 
     return Array.from(arg);
   }
   function includes(array, value) {
-    if ( !Array.prototype.includes) {
+    if (!Array.prototype.includes) {
       for (var idx in array) {
         if (array[idx] === value) {
           return true;
@@ -785,7 +779,7 @@
   } // see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
 
   function cloneUnlessOtherwiseSpecified(value, options) {
-    return  value;
+    return value;
   }
 
   function getMergeFunction(key, options) {
@@ -1681,7 +1675,7 @@
         return refresh($root, options);
       },
       inject: function inject(injectOptions) {
-        return  showWarningNotSupportedInBrowserBundle('inject');
+        return showWarningNotSupportedInBrowserBundle('inject');
       },
       pause: function pause$1() {
         return pause($root);
@@ -1727,11 +1721,11 @@
     version: version,
     install: install,
     generate: function generate(metaInfo, options) {
-      return  showWarningNotSupportedInBrowserBundle('generate');
+      return showWarningNotSupportedInBrowserBundle('generate');
     },
     hasMetaInfo: hasMetaInfo
   };
 
   return index;
 
-})));
+}));

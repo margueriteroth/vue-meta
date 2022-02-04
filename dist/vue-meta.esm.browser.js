@@ -1,6 +1,6 @@
 /**
  * vue-meta v2.4.0
- * (c) 2020
+ * (c) 2022
  * - Declan de Wet
  * - Sébastien Chopin (@Atinux)
  * - Pim (@pimlie)
@@ -15,17 +15,11 @@ var version = "2.4.0";
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function (obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -46,9 +40,9 @@ function _arrayLikeToArray(arr, len) {
 }
 
 function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it;
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
 
-  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+  if (!it) {
     if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
       if (it) o = it;
       var i = 0;
@@ -81,7 +75,7 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
       err;
   return {
     s: function () {
-      it = o[Symbol.iterator]();
+      it = it.call(o);
     },
     n: function () {
       var step = it.next();
@@ -276,7 +270,7 @@ function batchUpdate(callback, timeout) {
  * files in server/ still use normal js function
  */
 function find(array, predicate, thisArg) {
-  if ( !Array.prototype.find) {
+  if (!Array.prototype.find) {
     // idx needs to be a Number, for..in returns string
     for (var idx = 0; idx < array.length; idx++) {
       if (predicate.call(thisArg, array[idx], idx, array)) {
@@ -290,7 +284,7 @@ function find(array, predicate, thisArg) {
   return array.find(predicate, thisArg);
 }
 function findIndex(array, predicate, thisArg) {
-  if ( !Array.prototype.findIndex) {
+  if (!Array.prototype.findIndex) {
     // idx needs to be a Number, for..in returns string
     for (var idx = 0; idx < array.length; idx++) {
       if (predicate.call(thisArg, array[idx], idx, array)) {
@@ -304,14 +298,14 @@ function findIndex(array, predicate, thisArg) {
   return array.findIndex(predicate, thisArg);
 }
 function toArray(arg) {
-  if ( !Array.from) {
+  if (!Array.from) {
     return Array.prototype.slice.call(arg);
   }
 
   return Array.from(arg);
 }
 function includes(array, value) {
-  if ( !Array.prototype.includes) {
+  if (!Array.prototype.includes) {
     for (var idx in array) {
       if (array[idx] === value) {
         return true;
@@ -1590,7 +1584,7 @@ function $meta(options) {
       return refresh($root, options);
     },
     inject: function inject(injectOptions) {
-      return  showWarningNotSupportedInBrowserBundle('inject');
+      return showWarningNotSupportedInBrowserBundle('inject');
     },
     pause: function pause$1() {
       return pause($root);
@@ -1636,9 +1630,9 @@ var index = {
   version: version,
   install: install,
   generate: function generate(metaInfo, options) {
-    return  showWarningNotSupportedInBrowserBundle('generate');
+    return showWarningNotSupportedInBrowserBundle('generate');
   },
   hasMetaInfo: hasMetaInfo
 };
 
-export default index;
+export { index as default };

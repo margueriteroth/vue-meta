@@ -1,6 +1,6 @@
 /**
  * vue-meta v2.4.0
- * (c) 2020
+ * (c) 2022
  * - Declan de Wet
  * - Sébastien Chopin (@Atinux)
  * - Pim (@pimlie)
@@ -12,20 +12,40 @@ import deepmerge from 'deepmerge';
 
 var version = "2.4.0";
 
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+  }
+
+  return target;
+}
+
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function (obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 function _defineProperty(obj, key, value) {
@@ -43,40 +63,6 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
@@ -86,7 +72,7 @@ function _arrayWithoutHoles(arr) {
 }
 
 function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -111,9 +97,9 @@ function _nonIterableSpread() {
 }
 
 function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it;
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
 
-  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+  if (!it) {
     if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
       if (it) o = it;
       var i = 0;
@@ -146,7 +132,7 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
       err;
   return {
     s: function () {
-      it = o[Symbol.iterator]();
+      it = it.call(o);
     },
     n: function () {
       var step = it.next();
@@ -345,7 +331,7 @@ function batchUpdate(callback, timeout) {
  * files in server/ still use normal js function
  */
 function find(array, predicate, thisArg) {
-  if ( !Array.prototype.find) {
+  if (!Array.prototype.find) {
     // idx needs to be a Number, for..in returns string
     for (var idx = 0; idx < array.length; idx++) {
       if (predicate.call(thisArg, array[idx], idx, array)) {
@@ -359,7 +345,7 @@ function find(array, predicate, thisArg) {
   return array.find(predicate, thisArg);
 }
 function findIndex(array, predicate, thisArg) {
-  if ( !Array.prototype.findIndex) {
+  if (!Array.prototype.findIndex) {
     // idx needs to be a Number, for..in returns string
     for (var idx = 0; idx < array.length; idx++) {
       if (predicate.call(thisArg, array[idx], idx, array)) {
@@ -373,14 +359,14 @@ function findIndex(array, predicate, thisArg) {
   return array.findIndex(predicate, thisArg);
 }
 function toArray(arg) {
-  if ( !Array.from) {
+  if (!Array.from) {
     return Array.prototype.slice.call(arg);
   }
 
   return Array.from(arg);
 }
 function includes(array, value) {
-  if ( !Array.prototype.includes) {
+  if (!Array.prototype.includes) {
     for (var idx in array) {
       if (array[idx] === value) {
         return true;
@@ -1960,7 +1946,7 @@ function $meta(options) {
       return refresh($root, options);
     },
     inject: function inject$1(injectOptions) {
-      return  inject($root, options, injectOptions) ;
+      return inject($root, options, injectOptions) ;
     },
     pause: function pause$1() {
       return pause($root);
@@ -2005,9 +1991,9 @@ var index = {
   version: version,
   install: install,
   generate: function generate$1(metaInfo, options) {
-    return  generate(metaInfo, options) ;
+    return generate(metaInfo, options) ;
   },
   hasMetaInfo: hasMetaInfo
 };
 
-export default index;
+export { index as default };

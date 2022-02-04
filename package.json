@@ -56,7 +56,8 @@
     "test:e2e-ssr": "jest test/e2e/ssr",
     "test:e2e-browser": "jest test/e2e/browser",
     "test:unit": "jest test/unit",
-    "test:types": "tsc -p types/test"
+    "test:types": "tsc -p types/test",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "deepmerge": "^4.2.2"
